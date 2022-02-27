@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 3em;
+}
+
+#board {
+    width: 8rem;
+    height: 8rem;
+    background: rgb(64, 92, 68);
+    margin: .3rem;
+}
+
+.row {
+    display: flex;
+}
+
+.move {
+    background-color: rgb(139, 180, 101);
+}
+
+.row:nth-child(odd) > :nth-child(odd) {
+    background-color: rgb(127, 145, 135);
+}
+
+.row:nth-child(even) > :nth-child(even) {
+    background-color: rgb(127, 145, 135);
+}
+
+.row:nth-child(odd) > :nth-child(odd).move {
+    background-color: rgb(205, 216, 137);
+}
+
+.row:nth-child(even) > :nth-child(even).move {
+    background-color: rgb(205, 216, 137);
+}
+
+.square {
+    width: 1rem;
+    height: 1rem;
+}
+
+.br {
+    background-image: url(public/chess_piece_rook_black.png);
+    background-size: 1rem;
+}
+
+.bp {
+    background-image: url(public/chess_piece_pawn_black.png);
+    background-size: 1rem;
+}
+
+.bn {
+    background-image: url(public/chess_piece_knight_black.png);
+    background-size: 1rem;
+}
+
+.bk {
+    background-image: url(public/chess_piece_king_black.png);
+    background-size: 1rem;
+}
+
+.bq {
+    background-image: url(public/chess_piece_queen_black.png);
+    background-size: 50px;
+}
+
+.bb {
+    background-image: url(public/chess_piece_bishop_black.png);
+    background-size: 1rem;
+}
+
+.wr {
+    background-image: url(public/chess_piece_rook_white.png);
+    background-size: 1rem;
+}
+
+.wp {
+    background-image: url(public/chess_piece_pawn_white.png);
+    background-size: 1rem;
+}
+
+.wn {
+    background-image: url(public/chess_piece_knight_white.png);
+    background-size: 1rem;
+}
+
+.wk {
+    background-image: url(public/chess_piece_king_white.png);
+    background-size: 1rem;
+}
+
+.wq {
+    background-image: url(public/chess_piece_queen_white.png);
+    background-size: 1rem;
+}
+
+.wb {
+    background-image: url(public/chess_piece_bishop_white.png);
+    background-size: 1rem;
+}
+
+.move.bk, .move.bn, .move.bq, .move.bp, .move.bb, .move.br, .move.wr, .move.wb, .move.wn, .move.wq, .move.wp, .move.wk {
+    background-color: rgb(214, 176, 105) !important;
+}
+
+.bcheck>.row>.bk {
+    background-color: rgb(182, 93, 93);
+}
+
+.wcheck>.row>.wk {
+    background-color: rgb(182, 93, 93);
+}
+
+button {
+    font-size: 0.3rem;
+    padding: 2px;
+    margin: 0.3rem;
+}
