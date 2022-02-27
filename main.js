@@ -289,12 +289,15 @@ const play = (i, j) => {
         } else {
             const move = selectMove(i, j);
             if (move) {
+                boardElt.classList.remove("bcheck");
+                boardElt.classList.remove("wcheck");
                 movePiece(move);
                 updateServer(move);
                 if (checkCheck(playerTurn,1)) {
                     boardElt.classList.add(playerTurn+"check");
                     if (isGameOver(playerTurn)) {
-                        alert('Victoire des ' + (playerTurn === 'w' ? 'Noirs' : 'Blancs'));
+                        if (playerTurn === 'b') wWin.classList.remove('hidden');
+                        if (playerTurn === 'w') bWin.classList.remove('hidden');
                     }
                 }
                 waitForOpponent();
@@ -315,9 +318,6 @@ const selectPiece = (i, j) => {
 };
 
 const selectMove = (i, j) => {
-    boardElt.classList.remove("bcheck");
-    boardElt.classList.remove("wcheck");
-
     const [x,y] = selectedPiece;
     const possibleMoves = possibleSquares(x,y,0).filter((m) => m[0] === i && m[1] === j);
     if (possibleMoves.length > 0) {
@@ -402,41 +402,66 @@ const connect = () => {
             reconnectElt.classList.remove('hidden');
             return;
         }
-        connectElt.classList.remove('hidden');
-        reconnectElt.classList.remove('hidden');
+        connectElt.classList.add('hidden');
+        reconnectElt.classList.add('hidden');
         playerRole = res.player;
         setup();
         if (playerRole === 'b') {
             waitForOpponent();
+        } else {
+            resignElt.classList.remove('hidden');
         }
     });
 };
 
 const updateServer = (move) => {
     const queryUrl = `https://chesstester.pchol22.repl.co/move?x1=${move.x1}&y1=${move.y1}&x2=${move.x2}&y2=${move.y2}&extra=${move.extra}`;
-    fetch(queryUrl).then(() => { console.log('ok'); });
+    fetch(queryUrl).then(() => {});
 };
 
 const waitForOpponent = () => {
+    resignElt.classList.add('hidden');
     const interval = setInterval(() => {
         fetch('https://chesstester.pchol22.repl.co/lastMove')
         .then(res => res.json())
         .then(res => {
+            if (res.resigned) {
+                clearInterval(interval);
+                resign();
+                return;
+            }
             const move = res.move;
             const turn = res.playerTurn;
             if (move && turn === playerRole) {
+                boardElt.classList.remove("bcheck");
+                boardElt.classList.remove("wcheck");
                 movePiece(move);
+                resignElt.classList.remove('hidden');
+                if (checkCheck(playerTurn,1)) {
+                    boardElt.classList.add(playerTurn+"check");
+                    if (isGameOver(playerTurn)) {
+                        if (playerTurn === 'b') wWin.classList.remove('hidden');
+                        if (playerTurn === 'w') bWin.classList.remove('hidden');
+                    }
+                }
                 clearInterval(interval);
             }
         });
     }, 1000);
 };
 
-const resetBack = () => {
-    fetch('https://chesstester.pchol22.repl.co/reset')
-    .then(() => {
-        connect();
-    });
+const resign = (notifyServer=true) => {
+    boardElt.classList.remove("bcheck");
+    boardElt.classList.remove("wcheck");
+    resignElt.classList.add('hidden');
+    wWin.classList.add('hidden');
+    bWin.classList.add('hidden');
+    while (boardElt.lastChild) {
+        boardElt.removeChild(boardElt.firstChild);
+    }
+    if (notifyServer || playerTurn === playerRole) {console.log('ok');fetch('https://chesstester.pchol22.repl.co/reset').then(() => {});}
+    connectElt.classList.remove('hidden');
+    reconnectElt.classList.add('hidden');
 };
 
 const setup = () => {
@@ -481,6 +506,9 @@ const setup = () => {
 const boardElt = document.getElementById('board');
 const reconnectElt = document.getElementById('reconnect');
 const connectElt = document.getElementById('connect');
+const resignElt = document.getElementById('resign');
+const bWin = document.getElementById('bwin');
+const wWin = document.getElementById('wwin');
 
 let board;
 
@@ -491,7 +519,12 @@ let whiteCastle;
 let blackCastle;
 let enPassant;
 
-reconnectElt.addEventListener('click', resetBack);
+reconnectElt.addEventListener('click', resign);
 connectElt.addEventListener('click', connect);
+resignElt.addEventListener('click', resign);
+bWin.addEventListener('click', () => resign(false));
+wWin.addEventListener('click', () => resign(false));
 
 // TODO : Promotions
+// TODO : Castle check checks
+// TODO : Auto DC if AFK

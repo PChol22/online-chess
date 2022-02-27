@@ -9,10 +9,14 @@
     <title>Chess</title>
 </head>
 <body>
-    <div id="board">
+    <div id="board-ctn">
+        <div id="board"><!--Chess tiles and pieces go here--></div>
         <p id="reconnect" class="hidden">Connection failed :<br/>Game is full<br/><button>Reset game and retry</button></p>
-        <p id="connect">Join game<br/><button>Connect</button></p> 
+        <p id="connect">Join game<br/><button>Connect</button></p>
+        <p id="wwin" class="hidden">White wins !<br/><button>Disconnect</button></p>
+        <p id="bwin" class="hidden">Black wins !<br/><button>Disconnect</button></p>
     </div>
+    <p id="resign" class="hidden">Your turn !<button>Resign</button></p>
     <script src="main.js"></script>
 </body>
 </html>

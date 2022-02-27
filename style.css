@@ -1,17 +1,26 @@
+html {
+    font-size: 1em;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-size: 3em;
     font-family: sans-serif;
 }
 
-#board {
-    width: 8rem;
-    height: 8rem;
-    background: rgb(64, 92, 68);
-    margin: .3rem;
+#board-ctn {
     position: relative;
+    width: 24rem;
+    height: 24rem;
+    margin: .3rem;
+}
+
+#board {
+    width: 24rem;
+    height: 24rem;
+    background: rgb(64, 92, 68);
+    position: absolute;
 }
 
 .row {
@@ -39,68 +48,68 @@
 }
 
 .square {
-    width: 1rem;
-    height: 1rem;
+    width: 3rem;
+    height: 3rem;
 }
 
 .br {
     background-image: url(public/chess_piece_rook_black.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .bp {
     background-image: url(public/chess_piece_pawn_black.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .bn {
     background-image: url(public/chess_piece_knight_black.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .bk {
     background-image: url(public/chess_piece_king_black.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .bq {
     background-image: url(public/chess_piece_queen_black.png);
-    background-size: 50px;
+    background-size: 3rem;
 }
 
 .bb {
     background-image: url(public/chess_piece_bishop_black.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .wr {
     background-image: url(public/chess_piece_rook_white.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .wp {
     background-image: url(public/chess_piece_pawn_white.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .wn {
     background-image: url(public/chess_piece_knight_white.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .wk {
     background-image: url(public/chess_piece_king_white.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .wq {
     background-image: url(public/chess_piece_queen_white.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .wb {
     background-image: url(public/chess_piece_bishop_white.png);
-    background-size: 1rem;
+    background-size: 3rem;
 }
 
 .move.bk, .move.bn, .move.bq, .move.bp, .move.bb, .move.br, .move.wr, .move.wb, .move.wn, .move.wq, .move.wp, .move.wk {
@@ -116,20 +125,24 @@
 }
 
 button {
-    font-size: 0.3rem;
-    padding: 2px;
-    margin: 0.3rem;
+    font-size: .8rem;
+    padding: .1rem .2rem;
+    margin: .5rem;
 }
 
-#reconnect, #connect {
+#reconnect, #connect, #wwin, #bwin {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    font-size: 0.3rem;
+    font-size: .8rem;
     text-align: center;
     background-color: rgb(115, 173, 141);
-    padding: 0.2rem;
+    padding: .3rem .5rem;
+}
+
+#bwin, #wwin {
+    opacity: 0.7;
 }
 
 .hidden {
