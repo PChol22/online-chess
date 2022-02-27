@@ -1,5 +1,5 @@
 const getSquareElt = (i,j) => {
-    const row = boardElt.children[i];
+    const row = playerRole === 'w' ? boardElt.children[i] : boardElt.children[7-i];
     const square = row.children[j];
     return square;
 };
@@ -397,7 +397,13 @@ const connect = () => {
         return res.json();
     })
     .then((res) => {
-        if (res.player === 'no') return;
+        if (res.player === 'no') {
+            connectElt.classList.add('hidden');
+            reconnectElt.classList.remove('hidden');
+            return;
+        }
+        connectElt.classList.remove('hidden');
+        reconnectElt.classList.remove('hidden');
         playerRole = res.player;
         setup();
         if (playerRole === 'b') {
@@ -426,6 +432,13 @@ const waitForOpponent = () => {
     }, 1000);
 };
 
+const resetBack = () => {
+    fetch('https://chesstester.pchol22.repl.co/reset')
+    .then(() => {
+        connect();
+    });
+};
+
 const setup = () => {
     while (boardElt.firstChild) {
         boardElt.removeChild(boardElt.firstChild);
@@ -445,6 +458,8 @@ const setup = () => {
     blackCastle = false;
     enPassant = '';
 
+    const rows = [];
+
     for (let i = 0; i < 8; i++) {
         const row = document.createElement('div');
         row.classList.add('row');
@@ -455,11 +470,17 @@ const setup = () => {
             square.addEventListener('click', () => play(i,j));
             row.appendChild(square);
         }
-        boardElt.appendChild(row);
+        rows.push(row);
+    }
+
+    for (let i = 0; i < 8; i ++) {
+        boardElt.appendChild(playerRole === 'w' ? rows[i] : rows[7-i]);
     }
 }
 
 const boardElt = document.getElementById('board');
+const reconnectElt = document.getElementById('reconnect');
+const connectElt = document.getElementById('connect');
 
 let board;
 
@@ -470,16 +491,7 @@ let whiteCastle;
 let blackCastle;
 let enPassant;
 
-connect();
-
-const btn = document.createElement('button');
-btn.addEventListener('click', () => {
-    fetch('https://chesstester.pchol22.repl.co/reset')
-    .then(() => {
-        connect();
-    });
-});
-btn.innerText = "reset back";
-boardElt.parentElement.appendChild(btn);
+reconnectElt.addEventListener('click', resetBack);
+connectElt.addEventListener('click', connect);
 
 // TODO : Promotions
